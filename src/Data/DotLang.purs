@@ -1,13 +1,14 @@
 module Data.DotLang where
 
+import Data.Array (null)
 import Data.DotLang.Attr.Edge as Edge
-import Data.DotLang.Attr.Node as Node
 import Data.DotLang.Attr.Global as Global
+import Data.DotLang.Attr.Node as Node
 import Data.DotLang.Class (class DotLang, toText)
 import Data.Generic.Rep (class Generic)
+import Data.Maybe (Maybe(..))
 import Data.Show.Generic (genericShow)
 import Data.String (joinWith)
-import Data.Array (null)
 import Prelude (class Show, ($), (<$>), (<>))
 
 -- | type alias for a Nodes Name
@@ -89,6 +90,7 @@ data Definition
   | NodeDef Node
   | EdgeDef Edge
   | Subgraph (Array Definition)
+  | Cluster (Maybe String) (Array Definition)
 
 -- |
 --| ```purescript run
@@ -194,6 +196,10 @@ instance definitionDotlang :: DotLang Definition where
   toText (NodeDef n) = toText n <> "; "
   toText (EdgeDef e) = toText e <> "; "
   toText (Subgraph defs) = "subgraph { " <> (joinWith "" $ toText <$> defs) <> "}"
+  toText (Cluster maybeName defs) = "subgraph " <> nameToText maybeName <> "{ " <> (joinWith "" $ toText <$> defs) <> "}"
+   where
+     nameToText Nothing = ""
+     nameToText (Just n) = "\"" <> n <> "\""
 
 -- | graph can either be a graph or digraph
 data Graph
