@@ -96,7 +96,7 @@ instance attrDotLang :: DotLang Attr where
   toText (FontColor s) = "fontcolor=\"" <> toHexString s <> "\""
   toText (FontSize i) = "fontsize=" <> show i
   toText (Width i) = "width=" <> show i
-  toText (Height i) = "width=" <> show i
+  toText (Height i) = "height=" <> show i
   toText (Shape t) = "shape=" <> toText t
   toText (Style f) = "style=" <> toText f
   toText (Label l) = "label=" <> renderLabel l
