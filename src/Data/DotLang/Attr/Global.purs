@@ -84,6 +84,7 @@ data Attr
   | LabelLoc LabelLocValue
   | Compound Boolean
   | Style StyleValue
+  | PenWidth Number
 
 derive instance genericAttr :: Generic Attr _
 
@@ -98,3 +99,4 @@ instance attrDotLang :: DotLang Attr where
   toText (LabelLoc val) = "labelloc=" <> toText val
   toText (Compound val) = "compound=" <> show val
   toText (Style val) = "style=" <> toText val
+  toText (PenWidth val) = "penwidth=" <> show val
