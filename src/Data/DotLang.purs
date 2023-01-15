@@ -48,7 +48,7 @@ instance showNode :: Show Node where
   show = genericShow
 
 instance nodeDotLang :: DotLang Node where
-  toText (Node id attrs) = id <> " [" <> joinWith ", " (toText <$> attrs) <> "]"
+  toText (Node id attrs) = ticks id <> " [" <> joinWith ", " (toText <$> attrs) <> "]"
 
 data EdgeType
   = Forward
@@ -80,7 +80,7 @@ instance showEdge :: Show Edge where
   show = genericShow
 
 instance dotLangEdge :: DotLang Edge where
-  toText (Edge e id id2 attrs) = id <> " " <> (toText e) <> " " <> id2 <> attrText
+  toText (Edge e id id2 attrs) = ticks id <> " " <> (toText e) <> " " <> ticks id2 <> attrText
     where
     attrText = if null attrs then "" else " [" <> joinWith ", " (toText <$> attrs) <> "]"
 
@@ -220,3 +220,6 @@ graphFromElements n e = DiGraph $ (NodeDef <$> n) <> (EdgeDef <$> e)
 -- | `a` is a type that can be represented by a Dot-Graph
 class GraphRepr a where
   toGraph :: a -> Graph
+
+ticks :: String -> String
+ticks s = "\"" <> s <> "\""
