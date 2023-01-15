@@ -7,6 +7,10 @@ import Data.DotLang.Class (class DotLang, toText)
 import Data.Generic.Rep (class Generic)
 import Data.Show.Generic (genericShow)
 
+-- | type alias for a Nodes Name
+type Id
+  = String
+
 data LabelValue
   = TextLabel String
   | HtmlLabel String
@@ -72,6 +76,8 @@ data Attr
   | FillColor Color
   | PenWidth Number
   | ArrowHead ArrowHeadStyle
+  | LHead Id
+  | LTail Id
 
 derive instance genericAttr :: Generic Attr _
 
@@ -88,6 +94,9 @@ instance attrDotLang :: DotLang Attr where
   toText (FillColor c) = "fillcolor=\"" <> toHexString c <> "\""
   toText (PenWidth i) = "penwidth=" <> show i
   toText (ArrowHead s) = "arrowhead=" <> toText s
+  toText (LHead s) = "lhead=" <> ticks s
+  toText (LTail s) = "ltail=" <> ticks s
+
 
 -- |
 --| ```purescript run
@@ -107,3 +116,6 @@ htmlLabel = HtmlLabel >>> Label
 -- | label as a part of an attribute of an edge.
 label :: String -> Attr
 label = TextLabel >>> Label
+
+ticks :: String -> String
+ticks s = "\"" <> s <> "\""
